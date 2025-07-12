@@ -172,6 +172,15 @@
 
     <div class="row">
       <div>
+        <label for="mode">🔧 維護情境：</label>
+        <select id="mode" aria-required="true">
+          <option value="single">單桌次維護</option>
+          <option value="all">全視訊源維護</option>
+        </select>
+      </div>
+    </div>
+
+      <div>
         <label for="date">📅 日期：</label>
         <input type="date" id="date" aria-required="true" />
       </div>
