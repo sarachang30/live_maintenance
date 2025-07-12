@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>維護公告工具</title>
+  <title>桌次維護公告產生器</title>
   <style>
     * {
       box-sizing: border-box;
@@ -71,28 +72,6 @@
       box-shadow: 0 0 10px #0078d77a;
     }
 
-    button {
-      padding: 14px 24px;
-      background: #0078d7;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-      margin-top: 6px;
-      width: 100%;
-    }
-
-    button:hover {
-      background: #0060b5;
-    }
-
-    button:active {
-      background: #004c8e;
-    }
-
     textarea {
       resize: vertical;
       min-height: 400px;
@@ -136,9 +115,49 @@
       cursor: pointer;
     }
 
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .generate-btn {
+      background: #0078d7;
+      color: white;
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .generate-btn:hover {
+      background: #0060b5;
+    }
+
+    .copy-btn {
+      background: #e55e87;
+      color: white;
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      background: #cc4c74;
+    }
+
     @media (max-width: 480px) {
       .row,
-      .checkbox-group {
+      .checkbox-group,
+      .button-row {
         flex-direction: column;
       }
       .row.half > div {
@@ -193,18 +212,18 @@
       </label>
     </div>
 
-    <button type="button" onclick="generateNotice()">產生公告</button>
+    <div>
+      <label for="output">📢 公告內容：</label>
+      <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
+    </div>
 
-    <div class="row">
-      <div style="width: 100%;">
-        <label for="output">📢 公告內容：</label>
-        <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
-        <button type="button" onclick="copyNotice()">📋 複製公告</button>
-      </div>
+    <div class="button-row">
+      <button class="generate-btn" type="button" onclick="generateNotice()">產生公告</button>
+      <button class="copy-btn" type="button" onclick="copyNotice()">📋 複製公告</button>
     </div>
   </main>
 
-    <script>
+  <script>
     window.onload = () => {
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("date").value = today;
@@ -296,4 +315,3 @@ ______通知您`;
   </script>
 </body>
 </html>
-
