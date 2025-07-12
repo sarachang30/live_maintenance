@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>桌次維護公告產生器</title>
+  <title>維護公告工具</title>
   <style>
     * {
       box-sizing: border-box;
