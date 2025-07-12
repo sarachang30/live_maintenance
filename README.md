@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
@@ -23,7 +22,7 @@
     /* 卡片容器 */
     .container {
       background: #fff;
-      max-width: 600px;
+      max-width: 960px;
       width: 100%;
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
