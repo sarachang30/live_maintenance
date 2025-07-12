@@ -204,7 +204,7 @@
     </div>
   </main>
 
-  <script>
+    <script>
     window.onload = () => {
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("date").value = today;
@@ -280,19 +280,20 @@ ______通知您`;
 
       document.getElementById("output").value = notice;
     }
+
+    function copyNotice() {
+      const output = document.getElementById("output");
+      output.select();
+      output.setSelectionRange(0, 99999); // for mobile
+
+      try {
+        const successful = document.execCommand("copy");
+        alert(successful ? "已複製公告內容！" : "複製失敗，請手動複製");
+      } catch (err) {
+        alert("複製失敗，請手動複製");
+      }
+    }
   </script>
-  </body>
-
-  function copyNotice() {
-  const output = document.getElementById("output");
-  output.select();
-  output.setSelectionRange(0, 99999); // for mobile
-
-  try {
-    const successful = document.execCommand("copy");
-    alert(successful ? "已複製公告內容！" : "複製失敗，請手動複製");
-  } catch (err) {
-    alert("複製失敗，請手動複製");
-  }
-}
+</body>
 </html>
+
