@@ -6,143 +6,139 @@
   <style>
     /* Reset & Base */
     * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      background: #f0f4f8;
-      font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
+ * {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #eaf3fb, #f6f9fc);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  padding: 60px 24px;
+  min-height: 100vh;
+}
 
-    /* 卡片容器 */
-    .container {
-      background: #fff;
-      max-width: 960px;
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      padding: 30px 40px 40px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+/* 主容器 */
+.container {
+  background: #fff;
+  max-width: 1140px;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  padding: 40px 48px 48px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
-    /* 標題 */
-    h2 {
-      margin: 0 0 15px 0;
-      font-weight: 700;
-      color: #0078d7;
-      text-align: center;
-    }
+/* 標題 */
+h2 {
+  margin: 0 0 20px 0;
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: #0078d7;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
 
-    /* Label 與欄位包裝 */
-    label {
-      font-weight: 600;
-      margin-bottom: 6px;
-      display: block;
-      color: #444;
-      user-select: none;
-    }
+/* Label 與欄位 */
+label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+  color: #444;
+  user-select: none;
+}
 
-    input[type="date"],
-    input[type="time"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1.8px solid #d1d9e6;
-      font-size: 1rem;
-      font-weight: 500;
-      transition: all 0.25s ease;
-      background: #fff;
-      color: #222;
-      font-family: inherit;
-    }
-    input[type="date"]:focus,
-    input[type="time"]:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #0078d7;
-      box-shadow: 0 0 8px #0078d7aa;
-      background: #fff;
-    }
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 2px solid #d6deec;
+  font-size: 1.05rem;
+  background: #fff;
+  font-family: inherit;
+  color: #222;
+  transition: 0.25s ease;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #0078d7;
+  box-shadow: 0 0 10px #0078d77a;
+}
 
-    /* 按鈕 */
-    button {
-      padding: 14px;
-      background: #0078d7;
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px;
-      user-select: none;
-    }
-    button:hover {
-      background: #005ea2;
-    }
-    button:active {
-      background: #004377;
-    }
+/* 按鈕 */
+button {
+  padding: 14px 24px;
+  background: #0078d7;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+button:hover {
+  background: #0060b5;
+}
+button:active {
+  background: #004c8e;
+}
 
-    /* 文字區塊 */
-    textarea {
-      resize: vertical;
-      min-height: 180px;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 1rem;
-      color: #222;
-      background: #f9fbff;
-      border: 1.8px solid #d1d9e6;
-      box-shadow: inset 0 2px 5px #e3eaf7;
-      border-radius: 8px;
-    }
+/* Textarea */
+textarea {
+  resize: vertical;
+  min-height: 200px;
+  font-family: "Courier New", Courier, monospace;
+  background: #f9fbff;
+  border: 2px solid #d6deec;
+  box-shadow: inset 0 2px 6px #e0eaf5;
+  border-radius: 10px;
+  font-size: 1rem;
+}
 
-    /* Checkbox 群組 */
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 12px;
-      user-select: none;
-    }
-    .checkbox-group label {
-      font-weight: 600;
-      color: #555;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .checkbox-group input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-    }
+/* Checkbox 群組 */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.checkbox-group label {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+  cursor: pointer;
+}
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
 
-    /* 響應式 */
-    @media (max-width: 480px) {
-      body {
-        padding: 20px 10px;
-      }
-      .container {
-        padding: 20px 20px 30px 20px;
-      }
-      button {
-        font-size: 1rem;
-      }
-    }
+/* 響應式 */
+@media (max-width: 600px) {
+  body {
+    padding: 30px 16px;
+  }
+  .container {
+    padding: 24px 20px 32px 20px;
+  }
+  button {
+    font-size: 1rem;
+  }
+}
+
   </style>
 </head>
 <body>
