@@ -21,7 +21,7 @@
 
     .container {
       background: #fff;
-      max-width: 1140px;
+      max-width: 600px;
       width: 100%;
       margin: 0 auto;
       border-radius: 16px;
@@ -29,7 +29,7 @@
       padding: 40px 48px 48px 48px;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 24px;
     }
 
     h2 {
@@ -39,29 +39,6 @@
       color: #0078d7;
       text-align: center;
       letter-spacing: 0.5px;
-    }
-
-    .form-output-wrapper {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-    .form-fields {
-      flex: 1;
-      min-width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .output-area {
-      flex: 1;
-      min-width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
 
     label {
@@ -106,6 +83,7 @@
       cursor: pointer;
       transition: background-color 0.25s ease;
       margin-top: 6px;
+      width: 100%;
     }
 
     button:hover {
@@ -118,7 +96,7 @@
 
     textarea {
       resize: vertical;
-      min-height: 220px;
+      min-height: 400px;
       font-family: "Courier New", Courier, monospace;
       background: #f9fbff;
       border: 2px solid #d6deec;
@@ -127,10 +105,19 @@
       font-size: 1rem;
     }
 
+    .row {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .row.half > div {
+      flex: 1;
+    }
+
     .checkbox-group {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      gap: 24px;
       user-select: none;
     }
 
@@ -150,12 +137,14 @@
       cursor: pointer;
     }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 30px 16px;
+    @media (max-width: 480px) {
+      .row,
+      .checkbox-group {
+        flex-direction: column;
       }
-      .container {
-        padding: 24px 20px 32px 20px;
+      .row.half > div {
+        flex: none;
+        width: 100%;
       }
     }
   </style>
@@ -164,48 +153,51 @@
   <main class="container" role="main" aria-label="桌次維護公告產生器">
     <h2>🎥 桌次維護公告產生器</h2>
 
-    <div class="form-output-wrapper">
-      <div class="form-fields">
-        <div>
-          <label for="date">📅 日期：</label>
-          <input type="date" id="date" aria-required="true" />
-        </div>
-
-        <div>
-          <label for="startTime">🕓 起始時間：</label>
-          <input type="time" id="startTime" aria-required="true" />
-        </div>
-
-        <div>
-          <label for="endTime">🕘 結束時間：</label>
-          <input type="time" id="endTime" aria-required="true" />
-        </div>
-
-        <div>
-          <label for="source">🎲 視訊源：</label>
-          <select id="source" aria-required="true">
-            <option value="">請選擇</option>
-            <option value="BC">BC</option>
-            <option value="AS">AS</option>
-            <option value="MX">MX</option>
-          </select>
-        </div>
-
-        <fieldset class="checkbox-group" aria-label="選擇公告類型">
-          <label for="early">
-            <input type="checkbox" id="early" />
-            提前完成
-          </label>
-          <label for="extend">
-            <input type="checkbox" id="extend" />
-            延長維護
-          </label>
-        </fieldset>
-
-        <button type="button" onclick="generateNotice()">產生公告</button>
+    <div class="row">
+      <div>
+        <label for="date">📅 日期：</label>
+        <input type="date" id="date" aria-required="true" />
       </div>
+    </div>
 
-      <div class="output-area">
+    <div class="row half">
+      <div>
+        <label for="startTime">🕓 起始時間：</label>
+        <input type="time" id="startTime" aria-required="true" />
+      </div>
+      <div>
+        <label for="endTime">🕘 結束時間：</label>
+        <input type="time" id="endTime" aria-required="true" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="source">🎲 視訊源：</label>
+        <select id="source" aria-required="true">
+          <option value="">請選擇</option>
+          <option value="BC">BC</option>
+          <option value="AS">AS</option>
+          <option value="MX">MX</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checkbox-group">
+      <label for="early">
+        <input type="checkbox" id="early" />
+        提前完成
+      </label>
+      <label for="extend">
+        <input type="checkbox" id="extend" />
+        延長維護
+      </label>
+    </div>
+
+    <button type="button" onclick="generateNotice()">產生公告</button>
+
+    <div class="row">
+      <div style="width: 100%;">
         <label for="output">📢 公告內容：</label>
         <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
       </div>
