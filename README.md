@@ -281,6 +281,7 @@ ______通知您`;
       document.getElementById("output").value = notice;
     }
   </script>
+  </body>
 
   function copyNotice() {
   const output = document.getElementById("output");
@@ -294,6 +295,4 @@ ______通知您`;
     alert("複製失敗，請手動複製");
   }
 }
-
-</body>
 </html>
