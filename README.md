@@ -199,6 +199,7 @@
       <div style="width: 100%;">
         <label for="output">📢 公告內容：</label>
         <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
+        <button type="button" onclick="copyNotice()">📋 複製公告</button>
       </div>
     </div>
   </main>
@@ -280,5 +281,19 @@ ______通知您`;
       document.getElementById("output").value = notice;
     }
   </script>
+
+  function copyNotice() {
+  const output = document.getElementById("output");
+  output.select();
+  output.setSelectionRange(0, 99999); // for mobile
+
+  try {
+    const successful = document.execCommand("copy");
+    alert(successful ? "已複製公告內容！" : "複製失敗，請手動複製");
+  } catch (err) {
+    alert("複製失敗，請手動複製");
+  }
+}
+
 </body>
 </html>
