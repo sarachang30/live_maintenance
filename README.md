@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>自動維護公告</title>
+  <title>桌次維護公告產生器</title>
   <style>
     * {
       box-sizing: border-box;
@@ -25,7 +25,7 @@
       margin: 0 auto;
       border-radius: 16px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-      padding: 40px 48px 48px 48px;
+      padding: 40px 48px;
       display: flex;
       flex-direction: column;
       gap: 24px;
@@ -71,6 +71,26 @@
       box-shadow: 0 0 10px #0078d77a;
     }
 
+    button {
+      padding: 14px 24px;
+      background: #0078d7;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+    }
+
+    button:hover {
+      background: #0060b5;
+    }
+
+    button:active {
+      background: #004c8e;
+    }
+
     textarea {
       resize: vertical;
       min-height: 400px;
@@ -86,6 +106,7 @@
       display: flex;
       gap: 16px;
       width: 100%;
+      flex-wrap: wrap;
     }
 
     .row.half > div {
@@ -94,7 +115,8 @@
 
     .checkbox-group {
       display: flex;
-      gap: 24px;
+      gap: 12px;
+      flex-wrap: wrap;
       user-select: none;
     }
 
@@ -103,104 +125,80 @@
       color: #555;
       display: flex;
       align-items: center;
-      gap: 10px;
+      padding: 6px 10px;
+      background: #f1f4f8;
+      border-radius: 8px;
+      border: 1px solid #ccd4e0;
       cursor: pointer;
-      font-size: 1rem;
     }
 
     .checkbox-group input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
+      margin-right: 6px;
     }
 
-    .button-row {
+    #tableActions {
+      display: none;
+      margin-bottom: 8px;
+    }
+
+    .bottom-buttons {
       display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-top: 8px;
+      gap: 12px;
     }
 
-    .generate-btn {
-      background: #0078d7;
-      color: white;
-      flex: 1;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.05rem;
-      font-weight: bold;
-      cursor: pointer;
+    .btn-copy {
+      background: #e91e63;
     }
 
-    .generate-btn:hover {
-      background: #0060b5;
-    }
-
-    .copy-btn {
-      background: #e55e87;
-      color: white;
-      flex: 1;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.05rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .copy-btn:hover {
-      background: #cc4c74;
+    .btn-copy:hover {
+      background: #c2185b;
     }
 
     @media (max-width: 480px) {
       .row,
       .checkbox-group,
-      .button-row {
+      .bottom-buttons {
         flex-direction: column;
-      }
-      .row.half > div {
-        flex: none;
-        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <main class="container" role="main" aria-label="桌次維護公告產生器">
+  <main class="container">
     <h2>🎥 桌次維護公告產生器</h2>
 
     <div class="row">
       <div>
+        <label for="date">📅 日期：</label>
+        <input type="date" id="date" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
         <label for="mode">🔧 維護情境：</label>
-        <select id="mode" aria-required="true">
+        <select id="mode">
           <option value="single">單桌次維護</option>
           <option value="all">全視訊源維護</option>
         </select>
       </div>
     </div>
 
-      <div>
-        <label for="date">📅 日期：</label>
-        <input type="date" id="date" aria-required="true" />
-      </div>
-    </div>
-
     <div class="row half">
       <div>
         <label for="startTime">🕓 起始時間：</label>
-        <input type="time" id="startTime" aria-required="true" />
+        <input type="time" id="startTime" />
       </div>
       <div>
         <label for="endTime">🕘 結束時間：</label>
-        <input type="time" id="endTime" aria-required="true" />
+        <input type="time" id="endTime" />
       </div>
     </div>
 
     <div class="row">
       <div>
         <label for="source">🎲 視訊源：</label>
-        <select id="source" aria-required="true">
+        <select id="source">
           <option value="">請選擇</option>
           <option value="BC">BC</option>
           <option value="AS">AS</option>
@@ -209,47 +207,73 @@
       </div>
     </div>
 
+    <div id="tableActions">
+      <button type="button" id="selectAllBtn">BC 全桌次</button>
+    </div>
+    <div id="tableCheckboxes" class="checkbox-group"></div>
+
     <div class="checkbox-group">
-      <label for="early">
-        <input type="checkbox" id="early" />
-        提前完成
-      </label>
-      <label for="extend">
-        <input type="checkbox" id="extend" />
-        延長維護
-      </label>
+      <label><input type="checkbox" id="early" /> 提前完成</label>
+      <label><input type="checkbox" id="extend" /> 延長維護</label>
+    </div>
+
+    <div class="bottom-buttons">
+      <button onclick="generateNotice()">產生公告</button>
+      <button class="btn-copy" onclick="copyNotice()">📋 複製公告</button>
     </div>
 
     <div>
       <label for="output">📢 公告內容：</label>
-      <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
-    </div>
-
-    <div class="button-row">
-      <button class="generate-btn" type="button" onclick="generateNotice()">產生公告</button>
-      <button class="copy-btn" type="button" onclick="copyNotice()">📋 複製公告</button>
+      <textarea id="output" readonly></textarea>
     </div>
   </main>
 
   <script>
+    const tableOptions = {
+      BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3"],
+      AS: ["百家樂AS1", "百家樂AS2", "百家樂AS3"],
+      MX: ["百家樂MX1", "百家樂MX2", "百家樂MX3"]
+    };
+
     window.onload = () => {
       const today = new Date().toISOString().split("T")[0];
       document.getElementById("date").value = today;
-
-      ["date", "startTime", "endTime"].forEach((id) => {
-        const el = document.getElementById(id);
-        el.addEventListener("focus", () => el.showPicker && el.showPicker());
-      });
     };
 
-    const tableMap = {
-      BC: "百家樂EU1～EU5、輪盤EU1",
-      AS: "彈珠賽車AS1、百家樂AS1~AS5、骰寶AS1",
-      MX: "21點百家樂MX1、百家樂MX1~MX10、輪盤MX1、龍虎鬥MX1",
-    };
+    document.getElementById("source").addEventListener("change", function () {
+      const source = this.value;
+      const tableDiv = document.getElementById("tableCheckboxes");
+      const actionDiv = document.getElementById("tableActions");
+      const selectAllBtn = document.getElementById("selectAllBtn");
+      tableDiv.innerHTML = "";
+      actionDiv.style.display = "none";
+
+      if (tableOptions[source]) {
+        actionDiv.style.display = "block";
+        selectAllBtn.textContent = `${source} 全桌次`;
+
+        tableOptions[source].forEach((name, index) => {
+          const checkboxId = `${source}_table_${index}`;
+          const label = document.createElement("label");
+          label.innerHTML = `<input type="checkbox" id="${checkboxId}" value="${name}"> ${name}`;
+          tableDiv.appendChild(label);
+        });
+      }
+    });
+
+    function selectAllTables() {
+      const checkboxes = document.querySelectorAll("#tableCheckboxes input[type='checkbox']");
+      checkboxes.forEach(cb => cb.checked = true);
+    }
+
+    document.getElementById("selectAllBtn").addEventListener("click", selectAllTables);
+
+    function getSelectedTables() {
+      const checkboxes = document.querySelectorAll("#tableCheckboxes input[type='checkbox']:checked");
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
 
     function formatDate(dateStr) {
-      if (!dateStr) return "（未選日期）";
       const days = ["日", "一", "二", "三", "四", "五", "六"];
       const date = new Date(dateStr);
       const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -265,44 +289,23 @@
       const source = document.getElementById("source").value;
       const early = document.getElementById("early").checked;
       const extend = document.getElementById("extend").checked;
+      const tables = getSelectedTables();
 
       if (!date || !source || (!early && !extend && (!startTime || !endTime))) {
         alert("請填寫完整資訊！");
         return;
       }
 
-      const tables = tableMap[source];
       const formattedDate = formatDate(date);
+      const tableText = tables.length > 0 ? tables.join("、") : "(未選取桌次)";
       let notice = "";
 
       if (early) {
-        notice = `【BB視訊 - 桌次臨時維護 提前完成通知】
-
-桌次：${tables}
-
-請玩家重整後，即可進入遊戲
-
-______通知您`;
+        notice = `【BB視訊 - 桌次臨時維護 提前完成通知】\n\n桌次：${tableText}\n\n請玩家重整後，即可進入遊戲\n\n______通知您`;
       } else if (extend) {
-        if (!endTime) {
-          alert("請選擇結束時間！");
-          return;
-        }
-        notice = `【BB視訊 - 桌次臨時維護 延長通知】
-
-影響桌次：${tables}
-
-延長至北京時間：【${formattedDate} ${endTime}】
-
-______通知您`;
+        notice = `【BB視訊 - 桌次臨時維護 延長通知】\n\n影響桌次：${tableText}\n\n延長至北京時間：【${formattedDate} ${endTime}】\n\n______通知您`;
       } else {
-        notice = `【BB視訊 - 桌次臨時維護通知】
-
-影響桌次：${tables}
-
-北京時間：【${formattedDate} ${startTime} ～ ${endTime}】
-
-______通知您`;
+        notice = `【BB視訊 - 桌次臨時維護通知】\n\n影響桌次：${tableText}\n\n北京時間：【${formattedDate} ${startTime} ～ ${endTime}】\n\n______通知您`;
       }
 
       document.getElementById("output").value = notice;
@@ -311,14 +314,9 @@ ______通知您`;
     function copyNotice() {
       const output = document.getElementById("output");
       output.select();
-      output.setSelectionRange(0, 99999); // for mobile
-
-      try {
-        const successful = document.execCommand("copy");
-        alert(successful ? "已複製公告內容！" : "複製失敗，請手動複製");
-      } catch (err) {
-        alert("複製失敗，請手動複製");
-      }
+      output.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("已複製公告內容！");
     }
   </script>
 </body>
