@@ -1,191 +1,214 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>桌次維護公告產生器</title>
   <style>
-    /* Reset & Base */
     * {
- * {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  background: linear-gradient(to bottom, #eaf3fb, #f6f9fc);
-  font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
-  color: #333;
-  display: flex;
-  justify-content: center;
-  padding: 60px 24px;
-  min-height: 100vh;
-}
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #eaf3fb, #f6f9fc);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", Arial, sans-serif;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      padding: 60px 24px;
+      min-height: 100vh;
+    }
 
-/* 主容器 */
-.container {
-  background: #fff;
-  max-width: 1140px;
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  padding: 40px 48px 48px 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+    .container {
+      background: #fff;
+      max-width: 1140px;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+      padding: 40px 48px 48px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
 
-/* 標題 */
-h2 {
-  margin: 0 0 20px 0;
-  font-weight: 800;
-  font-size: 1.8rem;
-  color: #0078d7;
-  text-align: center;
-  letter-spacing: 0.5px;
-}
+    h2 {
+      margin: 0;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #0078d7;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
 
-/* Label 與欄位 */
-label {
-  font-weight: 600;
-  margin-bottom: 8px;
-  display: block;
-  color: #444;
-  user-select: none;
-}
+    .form-output-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
 
-input[type="date"],
-input[type="time"],
-select,
-textarea {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 10px;
-  border: 2px solid #d6deec;
-  font-size: 1.05rem;
-  background: #fff;
-  font-family: inherit;
-  color: #222;
-  transition: 0.25s ease;
-}
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: #0078d7;
-  box-shadow: 0 0 10px #0078d77a;
-}
+    .form-fields {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-/* 按鈕 */
-button {
-  padding: 14px 24px;
-  background: #0078d7;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background-color 0.25s ease;
-}
-button:hover {
-  background: #0060b5;
-}
-button:active {
-  background: #004c8e;
-}
+    .output-area {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-/* Textarea */
-textarea {
-  resize: vertical;
-  min-height: 200px;
-  font-family: "Courier New", Courier, monospace;
-  background: #f9fbff;
-  border: 2px solid #d6deec;
-  box-shadow: inset 0 2px 6px #e0eaf5;
-  border-radius: 10px;
-  font-size: 1rem;
-}
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+      color: #444;
+      user-select: none;
+    }
 
-/* Checkbox 群組 */
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
-}
-.checkbox-group label {
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #555;
-  cursor: pointer;
-}
-.checkbox-group input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-}
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 2px solid #d6deec;
+      font-size: 1.05rem;
+      background: #fff;
+      font-family: inherit;
+      color: #222;
+      transition: 0.25s ease;
+    }
 
-/* 響應式 */
-@media (max-width: 600px) {
-  body {
-    padding: 30px 16px;
-  }
-  .container {
-    padding: 24px 20px 32px 20px;
-  }
-  button {
-    font-size: 1rem;
-  }
-}
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #0078d7;
+      box-shadow: 0 0 10px #0078d77a;
+    }
 
+    button {
+      padding: 14px 24px;
+      background: #0078d7;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+      margin-top: 6px;
+    }
+
+    button:hover {
+      background: #0060b5;
+    }
+
+    button:active {
+      background: #004c8e;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 220px;
+      font-family: "Courier New", Courier, monospace;
+      background: #f9fbff;
+      border: 2px solid #d6deec;
+      box-shadow: inset 0 2px 6px #e0eaf5;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .checkbox-group label {
+      font-weight: 600;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 30px 16px;
+      }
+      .container {
+        padding: 24px 20px 32px 20px;
+      }
+    }
   </style>
 </head>
 <body>
   <main class="container" role="main" aria-label="桌次維護公告產生器">
     <h2>🎥 桌次維護公告產生器</h2>
 
-    <div>
-      <label for="date">📅 日期：</label>
-      <input type="date" id="date" aria-required="true" />
-    </div>
+    <div class="form-output-wrapper">
+      <div class="form-fields">
+        <div>
+          <label for="date">📅 日期：</label>
+          <input type="date" id="date" aria-required="true" />
+        </div>
 
-    <div>
-      <label for="startTime">🕓 起始時間：</label>
-      <input type="time" id="startTime" aria-required="true" />
-    </div>
+        <div>
+          <label for="startTime">🕓 起始時間：</label>
+          <input type="time" id="startTime" aria-required="true" />
+        </div>
 
-    <div>
-      <label for="endTime">🕘 結束時間：</label>
-      <input type="time" id="endTime" aria-required="true" />
-    </div>
+        <div>
+          <label for="endTime">🕘 結束時間：</label>
+          <input type="time" id="endTime" aria-required="true" />
+        </div>
 
-    <div>
-      <label for="source">🎲 視訊源：</label>
-      <select id="source" aria-required="true">
-        <option value="">請選擇</option>
-        <option value="BC">BC</option>
-        <option value="AS">AS</option>
-        <option value="MX">MX</option>
-      </select>
-    </div>
+        <div>
+          <label for="source">🎲 視訊源：</label>
+          <select id="source" aria-required="true">
+            <option value="">請選擇</option>
+            <option value="BC">BC</option>
+            <option value="AS">AS</option>
+            <option value="MX">MX</option>
+          </select>
+        </div>
 
-    <fieldset class="checkbox-group" aria-label="選擇公告類型">
-      <label for="early">
-        <input type="checkbox" id="early" />
-        提前完成
-      </label>
-      <label for="extend">
-        <input type="checkbox" id="extend" />
-        延長維護
-      </label>
-    </fieldset>
+        <fieldset class="checkbox-group" aria-label="選擇公告類型">
+          <label for="early">
+            <input type="checkbox" id="early" />
+            提前完成
+          </label>
+          <label for="extend">
+            <input type="checkbox" id="extend" />
+            延長維護
+          </label>
+        </fieldset>
 
-    <button type="button" onclick="generateNotice()">產生公告</button>
+        <button type="button" onclick="generateNotice()">產生公告</button>
+      </div>
 
-    <div>
-      <label for="output">📢 公告內容：</label>
-      <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
+      <div class="output-area">
+        <label for="output">📢 公告內容：</label>
+        <textarea id="output" readonly aria-live="polite" aria-label="公告內容"></textarea>
+      </div>
     </div>
   </main>
 
