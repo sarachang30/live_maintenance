@@ -174,6 +174,7 @@
           <option value="BC">BC</option>
           <option value="AS">AS</option>
           <option value="MX">MX</option>
+          <option value="RB">RB</option>
         </select>
       </div>
     </div>
@@ -197,9 +198,10 @@
   </main>
   <script>
     const tableOptions = {
-      BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3"],
-      AS: ["百家樂AS1", "百家樂AS2", "百家樂AS3"],
-      MX: ["百家樂MX1", "百家樂MX2", "百家樂MX3"]
+      BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3", "百家樂EU4", "百家樂EU5", "輪盤EU1"],
+      AS: ["百家樂AS1", "百家樂AS2", "百家樂AS3", "百家樂AS4", "百家樂AS5", "骰寶AS1", "彈珠賽車AS1"],
+      MX: ["百家樂MX1", "百家樂MX2", "百家樂MX3", "百家樂MX4", "百家樂MX5", "百家樂MX6", "百家樂MX7", "百家樂MX8", "百家樂MX9", "百家樂MX10", "龍虎鬥MX1", "輪盤MX1", "21點百家樂MX1"],
+      RB: ["百家樂RB1", "百家樂RB2", "百家樂RB3", "百家樂RB4", "百家樂RB5", "百家樂RB6", "百家樂RB7", "百家樂RB8", "百家樂RB9", "百家樂RB10"]
     };
 
     window.onload = () => {
