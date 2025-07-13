@@ -17,7 +17,6 @@
       padding: 60px 24px;
       min-height: 100vh;
     }
-
     .container {
       background: #fff;
       max-width: 600px;
@@ -30,7 +29,6 @@
       flex-direction: column;
       gap: 24px;
     }
-
     h2 {
       margin: 0;
       font-weight: 800;
@@ -39,7 +37,6 @@
       text-align: center;
       letter-spacing: 0.5px;
     }
-
     label {
       font-weight: 600;
       margin-bottom: 6px;
@@ -47,7 +44,6 @@
       color: #444;
       user-select: none;
     }
-
     input[type="date"],
     input[type="time"],
     select,
@@ -62,7 +58,6 @@
       color: #222;
       transition: 0.25s ease;
     }
-
     input:focus,
     select:focus,
     textarea:focus {
@@ -70,7 +65,6 @@
       border-color: #0078d7;
       box-shadow: 0 0 10px #0078d77a;
     }
-
     button {
       padding: 14px 24px;
       background: #0078d7;
@@ -82,15 +76,18 @@
       cursor: pointer;
       transition: background-color 0.25s ease;
     }
-
     button:hover {
       background: #0060b5;
     }
-
     button:active {
       background: #004c8e;
     }
-
+    .btn-copy {
+      background: #e91e63;
+    }
+    .btn-copy:hover {
+      background: #c2185b;
+    }
     textarea {
       resize: vertical;
       min-height: 400px;
@@ -101,25 +98,21 @@
       border-radius: 10px;
       font-size: 1rem;
     }
-
     .row {
       display: flex;
       gap: 16px;
       width: 100%;
       flex-wrap: wrap;
     }
-
     .row.half > div {
       flex: 1;
     }
-
     .checkbox-group {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
       user-select: none;
     }
-
     .checkbox-group label {
       font-weight: 600;
       color: #555;
@@ -131,33 +124,23 @@
       border: 1px solid #ccd4e0;
       cursor: pointer;
     }
-
     .checkbox-group input[type="checkbox"] {
       margin-right: 6px;
     }
-
     #tableActions {
       display: none;
+      gap: 10px;
       margin-bottom: 8px;
     }
-
     .bottom-buttons {
       display: flex;
       gap: 12px;
     }
-
-    .btn-copy {
-      background: #e91e63;
-    }
-
-    .btn-copy:hover {
-      background: #c2185b;
-    }
-
     @media (max-width: 480px) {
       .row,
       .checkbox-group,
-      .bottom-buttons {
+      .bottom-buttons,
+      #tableActions {
         flex-direction: column;
       }
     }
@@ -166,24 +149,12 @@
 <body>
   <main class="container">
     <h2>🎥 桌次維護公告產生器</h2>
-
     <div class="row">
       <div>
         <label for="date">📅 日期：</label>
         <input type="date" id="date" />
       </div>
     </div>
-
-    <div class="row">
-      <div>
-        <label for="mode">🔧 維護情境：</label>
-        <select id="mode">
-          <option value="single">單桌次維護</option>
-          <option value="all">全視訊源維護</option>
-        </select>
-      </div>
-    </div>
-
     <div class="row half">
       <div>
         <label for="startTime">🕓 起始時間：</label>
@@ -194,40 +165,36 @@
         <input type="time" id="endTime" />
       </div>
     </div>
-
     <div class="row">
       <div>
         <label for="source">🎲 視訊源：</label>
         <select id="source">
           <option value="">請選擇</option>
+          <option value="all">全部</option>
           <option value="BC">BC</option>
           <option value="AS">AS</option>
           <option value="MX">MX</option>
         </select>
       </div>
     </div>
-
-    <div id="tableActions">
-      <button type="button" id="selectAllBtn">BC 全桌次</button>
+    <div id="tableActions" class="row">
+      <button type="button" id="selectAllBtn">全桌次</button>
+      <button type="button" id="deselectAllBtn">取消全選</button>
     </div>
     <div id="tableCheckboxes" class="checkbox-group"></div>
-
     <div class="checkbox-group">
       <label><input type="checkbox" id="early" /> 提前完成</label>
       <label><input type="checkbox" id="extend" /> 延長維護</label>
     </div>
-
     <div class="bottom-buttons">
       <button onclick="generateNotice()">產生公告</button>
       <button class="btn-copy" onclick="copyNotice()">📋 複製公告</button>
     </div>
-
     <div>
       <label for="output">📢 公告內容：</label>
       <textarea id="output" readonly></textarea>
     </div>
   </main>
-
   <script>
     const tableOptions = {
       BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3"],
@@ -248,29 +215,36 @@
       tableDiv.innerHTML = "";
       actionDiv.style.display = "none";
 
-      if (tableOptions[source]) {
-        actionDiv.style.display = "block";
+      let allTables = [];
+      if (source === "all") {
+        Object.values(tableOptions).forEach(list => allTables.push(...list));
+        selectAllBtn.textContent = `全部 全桌次`;
+        actionDiv.style.display = "flex";
+      } else if (tableOptions[source]) {
+        allTables = tableOptions[source];
         selectAllBtn.textContent = `${source} 全桌次`;
-
-        tableOptions[source].forEach((name, index) => {
-          const checkboxId = `${source}_table_${index}`;
-          const label = document.createElement("label");
-          label.innerHTML = `<input type="checkbox" id="${checkboxId}" value="${name}"> ${name}`;
-          tableDiv.appendChild(label);
-        });
+        actionDiv.style.display = "flex";
       }
+
+      allTables.forEach((name, index) => {
+        const checkboxId = `table_${index}`;
+        const label = document.createElement("label");
+        label.innerHTML = `<input type="checkbox" id="${checkboxId}" value="${name}"> ${name}`;
+        tableDiv.appendChild(label);
+      });
     });
 
-    function selectAllTables() {
-      const checkboxes = document.querySelectorAll("#tableCheckboxes input[type='checkbox']");
-      checkboxes.forEach(cb => cb.checked = true);
-    }
+    document.getElementById("selectAllBtn").addEventListener("click", () => {
+      document.querySelectorAll("#tableCheckboxes input[type='checkbox']").forEach(cb => cb.checked = true);
+    });
 
-    document.getElementById("selectAllBtn").addEventListener("click", selectAllTables);
+    document.getElementById("deselectAllBtn").addEventListener("click", () => {
+      document.querySelectorAll("#tableCheckboxes input[type='checkbox']").forEach(cb => cb.checked = false);
+    });
 
     function getSelectedTables() {
-      const checkboxes = document.querySelectorAll("#tableCheckboxes input[type='checkbox']:checked");
-      return Array.from(checkboxes).map(cb => cb.value);
+      return Array.from(document.querySelectorAll("#tableCheckboxes input[type='checkbox']:checked"))
+        .map(cb => cb.value);
     }
 
     function formatDate(dateStr) {
@@ -286,12 +260,11 @@
       const date = document.getElementById("date").value;
       const startTime = document.getElementById("startTime").value;
       const endTime = document.getElementById("endTime").value;
-      const source = document.getElementById("source").value;
       const early = document.getElementById("early").checked;
       const extend = document.getElementById("extend").checked;
       const tables = getSelectedTables();
 
-      if (!date || !source || (!early && !extend && (!startTime || !endTime))) {
+      if (!date || (!early && !extend && (!startTime || !endTime))) {
         alert("請填寫完整資訊！");
         return;
       }
