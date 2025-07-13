@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
@@ -19,7 +20,7 @@
     }
     .container {
       background: #fff;
-      max-width: 600px;
+      max-width: 900px;
       width: 100%;
       margin: 0 auto;
       border-radius: 16px;
@@ -32,7 +33,7 @@
     h2 {
       margin: 0;
       font-weight: 800;
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: #0078d7;
       text-align: center;
       letter-spacing: 0.5px;
@@ -149,12 +150,14 @@
 <body>
   <main class="container">
     <h2>🎥 桌次維護公告產生器</h2>
+
     <div class="row">
       <div>
         <label for="date">📅 日期：</label>
         <input type="date" id="date" />
       </div>
     </div>
+
     <div class="row half">
       <div>
         <label for="startTime">🕓 起始時間：</label>
@@ -165,6 +168,7 @@
         <input type="time" id="endTime" />
       </div>
     </div>
+
     <div class="row">
       <div>
         <label for="source">🎲 視訊源：</label>
@@ -178,26 +182,33 @@
         </select>
       </div>
     </div>
+
     <div id="tableActions" class="row">
       <button type="button" id="selectAllBtn">全桌次</button>
       <button type="button" id="deselectAllBtn">取消全選</button>
     </div>
+
     <div id="tableCheckboxes" class="checkbox-group"></div>
-    <label>⚙️ 維護情境：</label>
-    <div class="checkbox-group">
-      <label><input type="checkbox" id="early" /> 提前完成</label>
-      <label><input type="checkbox" id="extend" /> 延長維護</label>
+
+    <div>
+      <label>⚙️ 維護情境：</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="early" /> 提前完成</label>
+        <label><input type="checkbox" id="extend" /> 延長維護</label>
+      </div>
     </div>
+
     <div>
       <label for="output">📢 公告內容：</label>
       <textarea id="output" readonly></textarea>
-      </div>
+    </div>
+
     <div class="bottom-buttons">
       <button onclick="generateNotice()">產生公告</button>
       <button class="btn-copy" onclick="copyNotice()">📋 複製公告</button>
     </div>
-    </div>
   </main>
+
   <script>
     const tableOptions = {
       BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3", "百家樂EU4", "百家樂EU5", "輪盤EU1"],
@@ -222,18 +233,18 @@
       let allTables = [];
       if (source === "all") {
         Object.values(tableOptions).forEach(list => allTables.push(...list));
-        selectAllBtn.textContent = 全部 全桌次;
+        selectAllBtn.textContent = "全部 全桌次";
         actionDiv.style.display = "flex";
       } else if (tableOptions[source]) {
         allTables = tableOptions[source];
-        selectAllBtn.textContent = ${source} 全桌次;
+        selectAllBtn.textContent = `${source} 全桌次`;
         actionDiv.style.display = "flex";
       }
 
       allTables.forEach((name, index) => {
-        const checkboxId = table_${index};
+        const checkboxId = `table_${index}`;
         const label = document.createElement("label");
-        label.innerHTML = <input type="checkbox" id="${checkboxId}" value="${name}"> ${name};
+        label.innerHTML = `<input type="checkbox" id="${checkboxId}" value="${name}"> ${name}`;
         tableDiv.appendChild(label);
       });
     });
@@ -257,7 +268,7 @@
       const mm = String(date.getMonth() + 1).padStart(2, "0");
       const dd = String(date.getDate()).padStart(2, "0");
       const day = days[date.getDay()];
-      return ${mm}/${dd}(${day});
+      return `${mm}/${dd}(${day})`;
     }
 
     function generateNotice() {
@@ -278,11 +289,11 @@
       let notice = "";
 
       if (early) {
-        notice = 【BB視訊 - 桌次臨時維護 提前完成通知】\n\n桌次：${tableText}\n\n請玩家重整後，即可進入遊戲\n\n______通知您;
+        notice = `【BB視訊 - 桌次臨時維護 提前完成通知】\n\n桌次：${tableText}\n\n請玩家重整後，即可進入遊戲\n\n______通知您`;
       } else if (extend) {
-        notice = 【BB視訊 - 桌次臨時維護 延長通知】\n\n影響桌次：${tableText}\n\n延長至北京時間：【${formattedDate} ${endTime}】\n\n______通知您;
+        notice = `【BB視訊 - 桌次臨時維護 延長通知】\n\n影響桌次：${tableText}\n\n延長至北京時間：【${formattedDate} ${endTime}】\n\n______通知您`;
       } else {
-        notice = 【BB視訊 - 桌次臨時維護通知】\n\n影響桌次：${tableText}\n\n北京時間：【${formattedDate} ${startTime} ～ ${endTime}】\n\n______通知您;
+        notice = `【BB視訊 - 桌次臨時維護通知】\n\n影響桌次：${tableText}\n\n北京時間：【${formattedDate} ${startTime} ～ ${endTime}】\n\n______通知您`;
       }
 
       document.getElementById("output").value = notice;
