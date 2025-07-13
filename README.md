@@ -32,7 +32,7 @@
     h2 {
       margin: 0;
       font-weight: 800;
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: #0078d7;
       text-align: center;
       letter-spacing: 0.5px;
@@ -135,7 +135,7 @@
     .bottom-buttons {
       display: flex;
       gap: 12px;
-      margin-top: 16px;
+      justify-content: center;
     }
     @media (max-width: 480px) {
       .row,
@@ -186,10 +186,10 @@
     <div id="tableCheckboxes" class="checkbox-group"></div>
     <div>
       <label>⚙️ 維護情境：</label>
-    </div>
-    <div class="checkbox-group">
-      <label><input type="checkbox" id="early" /> 提前完成</label>
-      <label><input type="checkbox" id="extend" /> 延長維護</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="early" /> 提前完成</label>
+        <label><input type="checkbox" id="extend" /> 延長維護</label>
+      </div>
     </div>
     <div>
       <label for="output">📢 公告內容：</label>
@@ -200,5 +200,13 @@
       <button class="btn-copy" onclick="copyNotice()">📋 複製公告</button>
     </div>
   </main>
+  <script>
+    const tableOptions = {
+      BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3", "百家樂EU4", "百家樂EU5", "輪盤EU1"],
+      AS: ["百家樂AS1", "百家樂AS2", "百家樂AS3", "百家樂AS4", "百家樂AS5", "骰寶AS1", "彈珠賽車AS1"],
+      MX: ["百家樂MX1", "百家樂MX2", "百家樂MX3", "百家樂MX4", "百家樂MX5", "百家樂MX6", "百家樂MX7", "百家樂MX8", "百家樂MX9", "百家樂MX10", "龍虎鬥MX1", "輪盤MX1", "21點百家樂MX1"],
+      RB: ["百家樂RB1", "百家樂RB2", "百家樂RB3", "百家樂RB4", "百家樂RB5", "百家樂RB6", "百家樂RB7", "百家樂RB8", "百家樂RB9", "百家樂RB10"]
+    };
+  </script>
 </body>
 </html>
