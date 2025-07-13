@@ -19,7 +19,7 @@
     }
     .container {
       background: #fff;
-      max-width: 600px;
+      max-width: 900px;
       width: 100%;
       margin: 0 auto;
       border-radius: 16px;
@@ -135,6 +135,7 @@
     .bottom-buttons {
       display: flex;
       gap: 12px;
+      margin-top: 16px;
     }
     @media (max-width: 480px) {
       .row,
@@ -183,116 +184,21 @@
       <button type="button" id="deselectAllBtn">取消全選</button>
     </div>
     <div id="tableCheckboxes" class="checkbox-group"></div>
+    <div>
+      <label>⚙️ 維護情境：</label>
+    </div>
     <div class="checkbox-group">
       <label><input type="checkbox" id="early" /> 提前完成</label>
       <label><input type="checkbox" id="extend" /> 延長維護</label>
-    </div>
-    <div class="bottom-buttons">
-      <button onclick="generateNotice()">產生公告</button>
-      <button class="btn-copy" onclick="copyNotice()">📋 複製公告</button>
     </div>
     <div>
       <label for="output">📢 公告內容：</label>
       <textarea id="output" readonly></textarea>
     </div>
+    <div class="bottom-buttons">
+      <button onclick="generateNotice()">產生公告</button>
+      <button class="btn-copy" onclick="copyNotice()">📋 複製公告</button>
+    </div>
   </main>
-  <script>
-    const tableOptions = {
-      BC: ["百家樂EU1", "百家樂EU2", "百家樂EU3", "百家樂EU4", "百家樂EU5", "輪盤EU1"],
-      AS: ["百家樂AS1", "百家樂AS2", "百家樂AS3", "百家樂AS4", "百家樂AS5", "骰寶AS1", "彈珠賽車AS1"],
-      MX: ["百家樂MX1", "百家樂MX2", "百家樂MX3", "百家樂MX4", "百家樂MX5", "百家樂MX6", "百家樂MX7", "百家樂MX8", "百家樂MX9", "百家樂MX10", "龍虎鬥MX1", "輪盤MX1", "21點百家樂MX1"],
-      RB: ["百家樂RB1", "百家樂RB2", "百家樂RB3", "百家樂RB4", "百家樂RB5", "百家樂RB6", "百家樂RB7", "百家樂RB8", "百家樂RB9", "百家樂RB10"]
-    };
-
-    window.onload = () => {
-      const today = new Date().toISOString().split("T")[0];
-      document.getElementById("date").value = today;
-    };
-
-    document.getElementById("source").addEventListener("change", function () {
-      const source = this.value;
-      const tableDiv = document.getElementById("tableCheckboxes");
-      const actionDiv = document.getElementById("tableActions");
-      const selectAllBtn = document.getElementById("selectAllBtn");
-      tableDiv.innerHTML = "";
-      actionDiv.style.display = "none";
-
-      let allTables = [];
-      if (source === "all") {
-        Object.values(tableOptions).forEach(list => allTables.push(...list));
-        selectAllBtn.textContent = `全部 全桌次`;
-        actionDiv.style.display = "flex";
-      } else if (tableOptions[source]) {
-        allTables = tableOptions[source];
-        selectAllBtn.textContent = `${source} 全桌次`;
-        actionDiv.style.display = "flex";
-      }
-
-      allTables.forEach((name, index) => {
-        const checkboxId = `table_${index}`;
-        const label = document.createElement("label");
-        label.innerHTML = `<input type="checkbox" id="${checkboxId}" value="${name}"> ${name}`;
-        tableDiv.appendChild(label);
-      });
-    });
-
-    document.getElementById("selectAllBtn").addEventListener("click", () => {
-      document.querySelectorAll("#tableCheckboxes input[type='checkbox']").forEach(cb => cb.checked = true);
-    });
-
-    document.getElementById("deselectAllBtn").addEventListener("click", () => {
-      document.querySelectorAll("#tableCheckboxes input[type='checkbox']").forEach(cb => cb.checked = false);
-    });
-
-    function getSelectedTables() {
-      return Array.from(document.querySelectorAll("#tableCheckboxes input[type='checkbox']:checked"))
-        .map(cb => cb.value);
-    }
-
-    function formatDate(dateStr) {
-      const days = ["日", "一", "二", "三", "四", "五", "六"];
-      const date = new Date(dateStr);
-      const mm = String(date.getMonth() + 1).padStart(2, "0");
-      const dd = String(date.getDate()).padStart(2, "0");
-      const day = days[date.getDay()];
-      return `${mm}/${dd}(${day})`;
-    }
-
-    function generateNotice() {
-      const date = document.getElementById("date").value;
-      const startTime = document.getElementById("startTime").value;
-      const endTime = document.getElementById("endTime").value;
-      const early = document.getElementById("early").checked;
-      const extend = document.getElementById("extend").checked;
-      const tables = getSelectedTables();
-
-      if (!date || (!early && !extend && (!startTime || !endTime))) {
-        alert("請填寫完整資訊！");
-        return;
-      }
-
-      const formattedDate = formatDate(date);
-      const tableText = tables.length > 0 ? tables.join("、") : "(未選取桌次)";
-      let notice = "";
-
-      if (early) {
-        notice = `【BB視訊 - 桌次臨時維護 提前完成通知】\n\n桌次：${tableText}\n\n請玩家重整後，即可進入遊戲\n\n______通知您`;
-      } else if (extend) {
-        notice = `【BB視訊 - 桌次臨時維護 延長通知】\n\n影響桌次：${tableText}\n\n延長至北京時間：【${formattedDate} ${endTime}】\n\n______通知您`;
-      } else {
-        notice = `【BB視訊 - 桌次臨時維護通知】\n\n影響桌次：${tableText}\n\n北京時間：【${formattedDate} ${startTime} ～ ${endTime}】\n\n______通知您`;
-      }
-
-      document.getElementById("output").value = notice;
-    }
-
-    function copyNotice() {
-      const output = document.getElementById("output");
-      output.select();
-      output.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-      alert("已複製公告內容！");
-    }
-  </script>
 </body>
 </html>
